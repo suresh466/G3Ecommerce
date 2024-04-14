@@ -6,6 +6,16 @@
             <asp:BoundField DataField="id" HeaderText="Item ID" />
             <asp:BoundField DataField="ItemName" HeaderText="Item Name" />
             <asp:BoundField DataField="Price" HeaderText="Price" />
+             <asp:TemplateField HeaderText="Quantity">
+                <ItemTemplate>
+                    <input type="number" min="0" max="10" class="quantity" value="0" />
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Actions">
+                <ItemTemplate>
+                    <asp:Button ID="btnAddToCart" runat="server" Text="Add to Cart" OnClick="AddToCart_Click" CommandArgument='<%# Eval("Id") %>' />
+                </ItemTemplate>
+            </asp:TemplateField>
         </Columns>
     </asp:GridView>
 </asp:Content>

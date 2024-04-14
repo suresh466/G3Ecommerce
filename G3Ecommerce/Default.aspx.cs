@@ -25,7 +25,7 @@ namespace G3Ecommerce
             string connectionString = ConfigurationManager.ConnectionStrings["g3ecommerce"].ConnectionString;
 
             // SQL query to retrieve categories
-            string query = "SELECT category_name FROM Categories";
+            string query = "SELECT category_id, category_name FROM Categories";
             Console.WriteLine(query);
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -39,6 +39,7 @@ namespace G3Ecommerce
                     while (reader.Read())
                     {
                         string categoryName = reader["category_name"].ToString();
+                
 
                         // Generate HTML for category card
                         LiteralControl categoryCard = new LiteralControl();
@@ -48,7 +49,7 @@ namespace G3Ecommerce
                                 <div class='card-body'>
                                     <h5 class='card-title'>{categoryName}</h5>
                                     <p class='card-text'>Description of {categoryName}.</p>
-                                    <a href='Items.aspx?category={categoryName}' class='btn btn-primary'>Explore</a>
+                                    <a href='Items.aspx?category={reader["category_id"]}' class='btn btn-primary'>Explore</a>
                                 </div>
                             </div>
                         </div>";
