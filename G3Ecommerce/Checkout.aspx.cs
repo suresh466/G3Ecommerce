@@ -27,7 +27,7 @@ namespace G3Ecommerce
 
         private void PopulateCustomerInformation()
         {
-            
+
 
             // Assuming you have a method to retrieve customer information based on user ID
             Customer customer = GetCustomerInfo();
@@ -47,15 +47,7 @@ namespace G3Ecommerce
         private Customer GetCustomerInfo()
         {
             int userId = -1;
-            HttpCookie emailCookie = Request.Cookies["email"];
-            if (emailCookie != null)
-            {
-                string userEmail = emailCookie.Value;
-
-                // Query the database to fetch the user ID based on the email
-                userId = GetUserIdByEmail(userEmail); 
-
-            }
+            userId = getUserIdFromCookie(userId);
             string query = "SELECT * FROM Customers WHERE customer_id = @UserId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -117,8 +109,77 @@ namespace G3Ecommerce
         {
             if (Page.IsValid)
             {
-                this.GetCustomerData();
+                int userId = -1;
+                userId = getUserIdFromCookie(userId);
+
+                // Check if there is an existing order
+                int orderId = GetExistingOrder(userId);
+
+                // If there is an existing order, update its status to "Processing" and add delivery address
+                if (orderId != -1)
+                {
+                    UpdateOrderStatusAndAddress(orderId);
+                }
+
+
                 Response.Redirect("~/Confirmation.aspx");
+            }
+        }
+
+        private int getUserIdFromCookie(int userId)
+        {
+            HttpCookie emailCookie = Request.Cookies["email"];
+            if (emailCookie != null)
+            {
+                string userEmail = emailCookie.Value;
+
+                // Query the database to fetch the user ID based on the email
+                userId = GetUserIdByEmail(userEmail);
+
+            }
+
+            return userId;
+        }
+
+        // Method to check if there is an existing order for the customer
+        private int GetExistingOrder(int customerId)
+        {
+            int orderId = -1;
+
+            string query = "SELECT order_id FROM Orders WHERE customer_id = @CustomerId AND order_status = 'IN_CART'";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CustomerId", customerId);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    orderId = Convert.ToInt32(result);
+                }
+            }
+
+            return orderId;
+        }
+
+        // Method to update order status to "Processing" and add delivery address
+        private void UpdateOrderStatusAndAddress(int orderId)
+        {
+            string deliveryAddress = txtAddress.Text; // Get delivery address from the textbox
+
+            string query = "UPDATE Orders SET order_status = 'Processing', delivery_address = @DeliveryAddress WHERE order_id = @OrderId";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@DeliveryAddress", deliveryAddress);
+                command.Parameters.AddWithValue("@OrderId", orderId);
+
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
 
@@ -139,7 +200,7 @@ namespace G3Ecommerce
                 txtAddress.Text = customer.Address;
                 txtCity.Text = customer.City;
                 txtZip.Text = customer.Zip;
-                
+
             }
         }
         private void GetCustomerData()
@@ -152,9 +213,9 @@ namespace G3Ecommerce
             customer.Address = txtAddress.Text;
             customer.City = txtCity.Text;
             customer.Zip = txtZip.Text;
-            
+
 
         }
-        
+
     }
 }

@@ -132,6 +132,12 @@ namespace G3Ecommerce
 
             // Get the current user's ID (you need to implement this based on your authentication system)
             int customerId = GetCurrentUserId();
+            // If customer is not logged in, redirect to login page
+            if (customerId == -1)
+            {
+                Response.Redirect("/Login");
+                return;
+            }
 
             // Check if the user already has an "IN_CART" order
             int orderId = GetCartOrderId(customerId);
