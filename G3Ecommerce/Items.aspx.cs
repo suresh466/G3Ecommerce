@@ -157,21 +157,19 @@ namespace G3Ecommerce
 
         private int GetCurrentUserId()
         {
-            // Retrieve the user's email from the cookie
-            HttpCookie emailCookie = Request.Cookies["email"]; // Assuming "UserEmail" is the name of the cookie where the email is stored
+            HttpCookie emailCookie = Request.Cookies["email"];
             if (emailCookie != null)
             {
                 string userEmail = emailCookie.Value;
 
-                // Query the database to fetch the user ID based on the email
-                int userId = GetUserIdByEmail(userEmail); // Implement this method to fetch the user ID
+                int userId = GetUserIdByEmail(userEmail);
 
                 return userId;
             }
             else
             {
-                // Cookie not found or user not logged in
-                return -1; // Or throw an exception, or handle accordingly based on your application logic
+                
+                return -1;
             }
         }
 
