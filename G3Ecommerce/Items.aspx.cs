@@ -128,7 +128,7 @@ namespace G3Ecommerce
             GridViewRow row = (GridViewRow)btnAddToCart.NamingContainer;
             TextBox txtQuantity = (TextBox)row.FindControl("txtQuantity");
 
-            int quantity = Convert.ToInt32(2);
+            int quantity = Convert.ToInt32(txtQuantity.Text);
 
             // Get the current user's ID (you need to implement this based on your authentication system)
             int customerId = GetCurrentUserId();
@@ -151,10 +151,55 @@ namespace G3Ecommerce
 
         private int GetCurrentUserId()
         {
-            // Implement logic to get the current user's ID
-            // For example: return HttpContext.Current.User.Identity.GetUserId();
-            return 1; // Placeholder value, replace with actual implementation
+            // Retrieve the user's email from the cookie
+            HttpCookie emailCookie = Request.Cookies["email"]; // Assuming "UserEmail" is the name of the cookie where the email is stored
+            if (emailCookie != null)
+            {
+                string userEmail = emailCookie.Value;
+
+                // Query the database to fetch the user ID based on the email
+                int userId = GetUserIdByEmail(userEmail); // Implement this method to fetch the user ID
+
+                return userId;
+            }
+            else
+            {
+                // Cookie not found or user not logged in
+                return -1; // Or throw an exception, or handle accordingly based on your application logic
+            }
         }
+
+        private int GetUserIdByEmail(string email)
+        {
+            int userId = -1; // Default value if user not found
+
+            // Define your SQL query to retrieve the user ID by email
+            string query = "SELECT customer_id FROM Customers WHERE customer_email = @Email";
+
+            // Create a SqlConnection object to connect to the database
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Create a SqlCommand object to execute the SQL query
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Add parameters to the SQL query
+                    command.Parameters.AddWithValue("@Email", email);
+
+                    // Open the database connection
+                    connection.Open();
+
+                    // Execute the SQL query and read the result
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        userId = Convert.ToInt32(result);
+                    }
+                }
+            }
+
+            return userId;
+        }
+
 
         private int GetCartOrderId(int customerId)
         {

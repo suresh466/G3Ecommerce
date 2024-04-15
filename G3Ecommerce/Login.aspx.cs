@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using G3Ecommerce.Models;
 using G3Ecommerce;
 using System.Net;
 using System.Web;
@@ -22,15 +23,21 @@ namespace G3Ecommerce
             string username = txtUsername.Text.Trim();
 
             // Implement logic to authenticate the user against the database
-            if (AuthenticationManager.AuthenticateUser(email, username))
+            User authenticatedUser = AuthenticationManager.AuthenticateUser(email, username);
+
+            if (authenticatedUser != null)
             {
-                // Session["LoggedInUser"] = new User { Email = email, Username = username };
+                // Update cookies with user information
+                HttpCookie userNameCookie = new HttpCookie("email", authenticatedUser.Email);
+                userNameCookie.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Add(userNameCookie);
+
+                HttpCookie isLoggedInCookie = new HttpCookie("IsLoggedIn", "true");
+                isLoggedInCookie.Expires = DateTime.Now.AddDays(1);
+                Response.Cookies.Add(isLoggedInCookie);
+
                 // Redirect the user to the home page after successful login
                 Response.Redirect("~/Default.aspx");
-            }
-            else
-            {
-                // Display error message
             }
         }
     }

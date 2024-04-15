@@ -8,7 +8,7 @@
             <asp:BoundField DataField="Price" HeaderText="Price" />
              <asp:TemplateField HeaderText="Quantity">
                 <ItemTemplate>
-                    <input type="number" min="0" max="10" class="quantity" value="0" />
+                    <asp:TextBox ID="txtQuantity" runat="server" CssClass="quantity" Text="0" type="number" min="0" max="10"></asp:TextBox>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Actions">
