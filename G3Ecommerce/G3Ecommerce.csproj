@@ -128,6 +128,13 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="images\desserts.jpg" />
+    <Content Include="images\drinks.jpg" />
+    <Content Include="images\Items\cake.jpg" />
+    <Content Include="images\Items\coke.jpg" />
+    <Content Include="images\Items\key_lime_pie.jpg" />
+    <Content Include="images\Items\teramesu.jpg" />
+    <Content Include="images\starter.jpg" />
     <Content Include="Items.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />

@@ -9,16 +9,21 @@ namespace G3Ecommerce.Models
     {
         public FoodItem() { }
 
-        public FoodItem(int id, string itemName, decimal price)
+        public FoodItem(int id, string itemName, decimal price, string itemDescription, string itemImage)
         {
             this.Id = id;
             this.ItemName = itemName;
             this.Price = price;
+            this.ItemDescription = itemDescription;
+            this.ItemImage = itemImage;
         }
 
         public int Id { get; set; }
         public string ItemName { get; set; }
         public decimal Price { get; set; }
+        public string ItemDescription { get; set; }
+
+        public string ItemImage { get; set; }
 
         public string Display()
         {

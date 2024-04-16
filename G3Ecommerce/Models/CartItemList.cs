@@ -56,7 +56,7 @@ namespace G3Ecommerce.Models
             CartItemList cart = new CartItemList();
 
             string connectionString = ConfigurationManager.ConnectionStrings["g3ecommerce"].ConnectionString;
-            string query = "SELECT oi.item_id, oi.quantity, f.item_name, f.item_price FROM OrderItems oi INNER JOIN Orders o ON oi.order_id = o.order_id INNER JOIN Items f ON oi.item_id = f.item_id WHERE o.customer_id = @userId AND o.order_status = 'IN_CART'";
+            string query = "SELECT oi.item_id, oi.quantity, f.item_name, f.item_price, f.item_description, f.item_image FROM OrderItems oi INNER JOIN Orders o ON oi.order_id = o.order_id INNER JOIN Items f ON oi.item_id = f.item_id WHERE o.customer_id = @userId AND o.order_status = 'IN_CART'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -73,8 +73,11 @@ namespace G3Ecommerce.Models
                             int quantity = reader.GetInt32(1);
                             string itemName = reader.GetString(2);
                             decimal itemPrice = reader.GetDecimal(3);
+                            string itemDescription = reader.IsDBNull(4) ? "" : reader.GetString(4);
+                            string itemImage = reader.IsDBNull(5) ? "" : reader.GetString(5);
 
-                            FoodItem foodItem = new FoodItem(itemId, itemName, itemPrice);
+
+                            FoodItem foodItem = new FoodItem(itemId, itemName, itemPrice, itemDescription, itemImage);
                             cart.AddItem(foodItem, quantity);
                         }
                     }

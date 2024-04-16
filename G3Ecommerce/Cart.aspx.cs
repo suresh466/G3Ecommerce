@@ -48,8 +48,21 @@ namespace G3Ecommerce
             // Retrieve cart items for the logged-in user with order status "In_cart" from the database
             CartItemList cartItems = CartItemList.GetCartItemsForUser(userId);
 
-            // Display cart items on the page
-            DisplayCart(cartItems);
+            lstCart.DataSource = cartItems;
+            lstCart.DataBind();
+        }
+
+        protected void lstCart_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            // Check if the ListViewItem is an Item
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                // Find the Remove button in the ListViewItem
+                Button btnRemove = (Button)e.Item.FindControl("btnRemove");
+
+                // Set the CSS class for the Remove button
+                btnRemove.CssClass = "btn btn-danger";
+            }
         }
 
         private int GetCurrentUserId()
@@ -105,42 +118,23 @@ namespace G3Ecommerce
 
         private void DisplayCart(CartItemList cartItems)
         {
-            lstCart.Items.Clear();
-
-            // Display cart items in a ListBox or any other suitable control
-            foreach (CartItem item in cartItems)
-            {
-                lstCart.Items.Add(item.Display());
-            }
+            lstCart.DataSource = cartItems;
+            lstCart.DataBind();
         }
 
         protected void btnRemove_Click(object sender, EventArgs e)
         {
             // Check if any item is selected
-            if (lstCart.SelectedIndex > -1)
-            {
-                // Get the index of the selected item
-                int selectedIndex = lstCart.SelectedIndex;
+            Button btnRemove = (Button)sender;
 
-                // Get the CartItemList for the current user
-                CartItemList cart = CartItemList.GetCartItemsForUser(GetCurrentUserId());
+            // Get the item ID from the command argument of the button
+            int itemId = Convert.ToInt32(btnRemove.CommandArgument);
 
-                // Retrieve the FoodItem associated with the selected item
-                FoodItem foodItem = cart[selectedIndex].FoodItem;
+            // Remove the item from the cart
+            RemoveItem(GetCurrentUserId(), itemId);
 
-                // Remove the item from the database
-                RemoveItem(GetCurrentUserId(), foodItem.Id);
-
-                // Remove the item from the CartItemList
-                // cart.RemoveAt(selectedIndex);
-
-                // Re-bind the cart items to the list
-                DisplayCartItems();
-            }
-            else
-            {
-                lblMessage.Text = "Please select the item you want to remove.";
-            }
+            // Rebind the cart items to the list view
+            DisplayCartItems();
         }
 
         private void RemoveItem(int userId, int itemId)

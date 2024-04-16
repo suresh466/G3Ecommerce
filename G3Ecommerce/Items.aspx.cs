@@ -44,16 +44,15 @@ namespace G3Ecommerce
                 foodItems = FetchAllItems();
             }
 
-            // Bind data to GridView
-            GridView1.DataSource = foodItems;
-            GridView1.DataBind();
+            ItemsRepeater.DataSource = foodItems;
+            ItemsRepeater.DataBind();
         }
 
         private List<FoodItem> FetchItemsByCategory(int categoryId)
         {
             List<FoodItem> foodItems = new List<FoodItem>();
 
-            string query = "SELECT item_id, item_name, item_price FROM Items WHERE category_id = @categoryId";
+            string query = "SELECT item_id, item_name, item_price, item_description, item_image FROM Items WHERE category_id = @categoryId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -70,8 +69,10 @@ namespace G3Ecommerce
                             int itemId = reader.GetInt32(0);
                             string itemName = reader.GetString(1);
                             decimal itemPrice = reader.GetDecimal(2);
+                            string itemDescription = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                            string itemImage = reader.IsDBNull(4) ? "" : reader.GetString(4);
 
-                            foodItems.Add(new FoodItem(itemId, itemName, itemPrice));
+                            foodItems.Add(new FoodItem(itemId, itemName, itemPrice, itemDescription, itemImage));
                         }
                     }
                 }
@@ -89,7 +90,7 @@ namespace G3Ecommerce
         {
             List<FoodItem> foodItems = new List<FoodItem>();
 
-            string query = "SELECT item_id, item_name, item_price FROM Items";
+            string query = "SELECT item_id, item_name, item_price, item_description, item_image FROM Items";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -104,8 +105,10 @@ namespace G3Ecommerce
                             int itemId = reader.GetInt32(0);
                             string itemName = reader.GetString(1);
                             decimal itemPrice = reader.GetDecimal(2);
+                            string itemDescription = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                            string itemImage = reader.IsDBNull(4) ? "" : reader.GetString(4);
 
-                            foodItems.Add(new FoodItem(itemId, itemName, itemPrice));
+                            foodItems.Add(new FoodItem(itemId, itemName, itemPrice, itemDescription, itemImage));
                         }
                     }
                 }
@@ -125,8 +128,9 @@ namespace G3Ecommerce
             int itemId = Convert.ToInt32(btnAddToCart.CommandArgument);
 
             // Find the corresponding item in the GridView
-            GridViewRow row = (GridViewRow)btnAddToCart.NamingContainer;
-            TextBox txtQuantity = (TextBox)row.FindControl("txtQuantity");
+            RepeaterItem item = (RepeaterItem)btnAddToCart.NamingContainer;
+            TextBox txtQuantity = (TextBox)item.FindControl("txtQuantity");
+
 
             int quantity = Convert.ToInt32(txtQuantity.Text);
 
