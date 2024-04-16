@@ -135,6 +135,7 @@
     <Content Include="images\Items\key_lime_pie.jpg" />
     <Content Include="images\Items\teramesu.jpg" />
     <Content Include="images\starter.jpg" />
+    <Content Include="ItemManager.aspx" />
     <Content Include="Items.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -267,6 +268,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="ItemManager.aspx.cs">
+      <DependentUpon>ItemManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemManager.aspx.designer.cs">
+      <DependentUpon>ItemManager.aspx</DependentUpon>
     </Compile>
     <Compile Include="Items.aspx.cs">
       <DependentUpon>Items.aspx</DependentUpon>
