@@ -134,6 +134,7 @@
     <Content Include="images\Items\coke.jpg" />
     <Content Include="images\Items\key_lime_pie.jpg" />
     <Content Include="images\Items\teramesu.jpg" />
+    <Content Include="images\Items\roasted.jpg" />
     <Content Include="images\starter.jpg" />
     <Content Include="ItemManager.aspx" />
     <Content Include="Items.aspx" />
