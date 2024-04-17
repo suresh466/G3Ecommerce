@@ -36,6 +36,9 @@ namespace G3Ecommerce
                 isLoggedInCookie.Expires = DateTime.Now.AddDays(1);
                 Response.Cookies.Add(isLoggedInCookie);
 
+                ((SiteMaster)this.Master).ShowNotification("Successfully logged in!", "success");
+
+
                 // Redirect the user to the home page after successful login
                 Response.Redirect("~/Default.aspx");
             }

@@ -27,6 +27,8 @@ namespace G3Ecommerce
                 }
                 else
                 {
+                    ((SiteMaster)this.Master).ShowNotification("Please Login to continue.", "message");
+
                     // Redirect to the login page if the user is not logged in
                     Response.Redirect("~/Login.aspx");
                 }
@@ -80,7 +82,8 @@ namespace G3Ecommerce
             }
             else
             {
-                // Cookie not found or user not logged in
+                ((SiteMaster)this.Master).ShowNotification("An error occured!", "error");
+
                 return -1; // Or throw an exception, or handle accordingly based on your application logic
             }
         }
@@ -192,6 +195,8 @@ namespace G3Ecommerce
             }
             else
             {
+                ((SiteMaster)this.Master).ShowNotification("Cart Empty!", "warning");
+
                 // Show error message indicating the cart is empty
                 lblMessage.Text = "Cart is empty. Please add items before checking out.";
             }

@@ -78,8 +78,8 @@ namespace G3Ecommerce
                 }
                 catch (Exception ex)
                 {
-                    // Handle the exception
-                    // For example: Log the error, display an error message to the user, etc.
+                    ((SiteMaster)this.Master).ShowNotification("An error occured!", "error");
+
                 }
             }
 
@@ -114,8 +114,8 @@ namespace G3Ecommerce
                 }
                 catch (Exception ex)
                 {
-                    // Handle the exception
-                    // For example: Log the error, display an error message to the user, etc.
+                    ((SiteMaster)this.Master).ShowNotification("An error occured!", "error");
+
                 }
             }
 
@@ -139,6 +139,8 @@ namespace G3Ecommerce
             // If customer is not logged in, redirect to login page
             if (customerId == -1)
             {
+                ((SiteMaster)this.Master).ShowNotification("Please login First!", "warning");
+
                 Response.Redirect("/Login");
                 return;
             }
@@ -319,6 +321,8 @@ namespace G3Ecommerce
                         {
                             // Item does not exist in the order, insert a new record into the OrderItems table
                             InsertOrderItem(orderId, itemId, quantity);
+                            ((SiteMaster)this.Master).ShowNotification("Item Successfully Added!", "success");
+
                         }
                     }
                 }

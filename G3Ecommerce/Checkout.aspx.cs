@@ -121,6 +121,7 @@ namespace G3Ecommerce
                     UpdateOrderStatusAndAddress(orderId);
                 }
 
+                ((SiteMaster)this.Master).ShowNotification("Order successfully placed!", "success");
 
                 Response.Redirect("~/Confirmation.aspx");
             }

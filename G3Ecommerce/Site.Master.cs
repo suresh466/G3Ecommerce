@@ -13,5 +13,17 @@ namespace G3Ecommerce
         {
 
         }
+
+        public void ShowNotification(string message, string category)
+        {
+            string script = $@"toastr.{category}('{message}', '{category.First().ToString().ToUpper() + category.Substring(1)}')";
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "notificationScript", script, true);
+        }
+
+        // Method to hide the notification panel
+        public void HideNotification()
+        {
+            // notificationPanel.Visible = false;
+        }
     }
 }

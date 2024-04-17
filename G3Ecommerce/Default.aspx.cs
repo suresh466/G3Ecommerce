@@ -69,6 +69,8 @@ namespace G3Ecommerce
                 }
                 else
                 {
+                    ((SiteMaster)this.Master).ShowNotification("Database Error!", "warning");
+
                     // Handle case where no categories are found
                 }
 
