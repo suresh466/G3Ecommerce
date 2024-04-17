@@ -5,14 +5,16 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <!-- Hero Section -->
-    <section class="hero-section text-white py-5">
-        <div class="container text-center">
-            <h1 class="display-4 mb-4">Special Offers!</h1>
-            <p class="lead">Check out our exclusive deals and discounts.</p>
-            <a href="#" class="btn btn-primary btn-lg">Order Now</a>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="hero-section text-white py-5 text-center" style="background-image: url('images/hero.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+    <div class="container">
+        <h1 class="display-4 mb-4">Special Offers!</h1>
+        <p class="lead">Check out our exclusive deals and discounts.</p>
+        <a href="/items" class="btn btn-primary btn-lg">Order Now</a>
+    </div>
+</section>
+
+
 
     <!-- Categories Section -->
     <section class="categories-section py-5">
